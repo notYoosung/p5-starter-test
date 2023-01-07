@@ -3,5 +3,5 @@
     "*.js",
     "libraries/*.js",
     "node_modules/@types/p5/global.d.ts"
-  ]
+, "sketch.js"  ]
 }
