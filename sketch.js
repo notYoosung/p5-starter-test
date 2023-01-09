@@ -1,4 +1,14 @@
-var isThing, newClass, ParentClass;
+var _,
+	// Functions
+	isThing,
+	newClass,
+	// Classes
+	Entity,
+	Ally,
+	Foe,
+	// Reference Objects
+	allies = [],
+	foes = [];
 
 function setup() {
 	createCanvas(400, 400);
@@ -6,8 +16,6 @@ function setup() {
 	isThing = function (maybeisthing) {
 		return maybeisthing === undefined || maybeisthing === NaN || maybeisthing === null;
 	};
-
-	ParentClass = function () {};
 
 	/**
 	 * @param {Object} classConfig
@@ -23,6 +31,13 @@ function setup() {
 			let this_ = this;
 			Object.assign(this, config);
 
+			// Assign default values to undefined properties
+			if (isThing(classConfig.inheritFrom)) {
+				classConfig.inheritFrom.forEach((elem, indx) => {
+					if (!isThing(this_[elem])) {
+					}
+				});
+			}1
 			// Assign default values to undefined properties
 			if (isThing(classConfig.defaults)) {
 				classConfig.defaults.forEach((elem, indx) => {
@@ -45,7 +60,16 @@ function setup() {
 		return C;
 	};
 
-	
+	Entity = newClass({
+		defaults: [],
+		essentials: [],
+	});
+
+	Ally = newClass({
+		inheritFrom: [Entity],
+		defaults: [],
+		essentials: [],
+	});
 }
 
 function draw() {
