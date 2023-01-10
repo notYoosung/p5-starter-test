@@ -61,15 +61,30 @@ function setup() {
 	};
 
 	Entity = newClass({
-		defaults: [],
-		essentials: [],
+		defaults: {
+			dir: 0,
+			velX: 0,
+			velY: 0,
+		},
+		essentials: ['x', 'y', 'w', 'h'],
+		methods: {
+			display: (self) => {
+				
+			}
+		},
 	});
 
 	Ally = newClass({
 		inheritFrom: [Entity],
-		defaults: [],
+		defaults: {},
 		essentials: [],
 	});
+	
+	Enemy = newClass({
+		inheritFrom: [Entity],
+		defaults: {},
+		essentials: [],
+	})
 }
 
 function draw() {
