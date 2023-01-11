@@ -65,11 +65,33 @@ function setup() {
 			dir: 0,
 			velX: 0,
 			velY: 0,
+			color: color(255),
+			stroke: color(0)
 		},
 		essentials: ['x', 'y', 'w', 'h'],
 		methods: {
 			display: (self) => {
-				
+				if (!isThing(self.verts)) {
+					self.verts = [
+						{x: -self.w, y: -self.h},
+						{x: self.w, y: -self.h},
+						{x: self.w, y: self.h},
+						{x: -self.w, y: self.h}
+					];
+					self.vertDirs = [
+						atan2(-self.w, -self.h),
+						atan2(self.w, -self.h),
+						atan2(self.w, self.h),
+						atan2(-self.w, self.h)
+					];
+				}
+				fill(self.color);
+				stroke(self.stroke);
+				beginShape();
+				vertex(cos(self.dir))
+				endShape(CLOSE);
+				rect(self.x, self.y, self.w, self.h);
+
 			}
 		},
 	});
