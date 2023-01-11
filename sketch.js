@@ -34,7 +34,8 @@ function setup() {
 			// Assign default values to undefined properties
 			if (isThing(classConfig.inheritFrom)) {
 				classConfig.inheritFrom.forEach((elem, indx) => {
-					if (!isThing(this_[elem])) {
+					if (isThing(elem.defaults)) {
+						elem.defaults
 					}
 				});
 			}1
