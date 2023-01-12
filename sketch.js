@@ -8,7 +8,7 @@ var _,
 	Foe,
 	// Reference Objects
 	allies = [],
-	foes = [];
+	enemies = [];
 
 function setup() {
 	createCanvas(400, 400);
@@ -31,14 +31,34 @@ function setup() {
 			let this_ = this;
 			Object.assign(this, config);
 
+
+			// Store a class-wide reference to a reference object
+
+
 			// Assign default values to undefined properties
 			if (isThing(classConfig.inheritFrom)) {
-				classConfig.inheritFrom.forEach((elem, indx) => {
+				classConfig.inheritFrom.forEach((elem) => {
 					if (isThing(elem.defaults)) {
-						elem.defaults
+						if (!isThing(this_.defaults)) {
+							this_.defaults = {};
+						}
+						Object.keys(elem.defaults).forEach((defaultKey) => {
+							if (!elem.defaults.includes(elem.defaults[defaultKey])) {
+								this_.defaults[defaultKey] = elem.defaults[defaultKey];
+							}
+						});
+					}
+					if (!isThing(this_.defaults)) {
+						if (isThing(elem.defaults)) {
+							this_.defaults = {};
+						}
+						Object.keys(elem.defaults).forEach((defaultKey) => {
+							if (elem.defaults.includes(elem.defaults[defaultKey])) { return; }
+							this_.defaults[defaultKey] = elem.defaults[defaultKey];
+						});
 					}
 				});
-			}1
+			}
 			// Assign default values to undefined properties
 			if (isThing(classConfig.defaults)) {
 				classConfig.defaults.forEach((elem, indx) => {
@@ -74,10 +94,10 @@ function setup() {
 			display: (self) => {
 				if (!isThing(self.verts)) {
 					self.verts = [
-						{x: -self.w, y: -self.h},
-						{x: self.w, y: -self.h},
-						{x: self.w, y: self.h},
-						{x: -self.w, y: self.h}
+						{ x: -self.w, y: -self.h },
+						{ x: self.w, y: -self.h },
+						{ x: self.w, y: self.h },
+						{ x: -self.w, y: self.h }
 					];
 					self.vertDirs = [
 						atan2(-self.w, -self.h),
@@ -89,7 +109,7 @@ function setup() {
 				fill(self.color);
 				stroke(self.stroke);
 				beginShape();
-				vertex(cos(self.dir))
+				vertex(cos(self.dir));
 				endShape(CLOSE);
 				rect(self.x, self.y, self.w, self.h);
 
@@ -97,18 +117,24 @@ function setup() {
 		},
 	});
 
+
 	Ally = newClass({
 		inheritFrom: [Entity],
 		defaults: {},
 		essentials: [],
 	});
-	
 	Enemy = newClass({
 		inheritFrom: [Entity],
 		defaults: {},
 		essentials: [],
-	})
+	});
+
+
+	enemies.push(newClass);
+
 }
+
+
 
 function draw() {
 	background(220);
