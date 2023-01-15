@@ -47,17 +47,19 @@ function setup() {
 
 			// Store a class-wide reference to a reference object
 			if (isThing(classConfig.refObj)) {
-				this.refObj = classConfig.refObj;
+				this_.refObj = classConfig.refObj;
 			}
 
 			// 
 			if (isThing(classConfig.methods)) {
-				Object.assign(this.prototype, classConfig.methods);
+				Object.assign(this_.prototype, classConfig.methods);
 			}
 
 			// Assign default values to undefined properties
+			// Doesn't override existing properties so that higher-level props are preserved
 			if (isThing(classConfig.inheritFrom)) {
 				classConfig.inheritFrom.forEach((parent) => {
+					// Defaults
 					if (isThing(parent.defaults)) {
 						for (let elem in parent.defaults) {
 							if (!isThing(this_[elem])) {
@@ -65,6 +67,7 @@ function setup() {
 							}
 						}
 					}
+					// Methods
 					if (isThing(parent.methods)) {
 						for (let elem in parent.methods) {
 							if (!isThing(this_[elem])) {
@@ -72,6 +75,7 @@ function setup() {
 							}
 						}
 					}
+					// Essentials
 					if (isThing(parent.essentials)) {
 						if (!isThing(this_.essentials)) {
 							this_.essentials = {};
@@ -157,7 +161,6 @@ function setup() {
 
 
 	enemies.push(new Enemy({
-
 	}));
 
 }
