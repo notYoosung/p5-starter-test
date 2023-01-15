@@ -2,6 +2,7 @@ var _,
 	// Functions
 	isThing,
 	newClass,
+	runForEach,
 	// Classes
 	Entity,
 	Ally,
@@ -13,8 +14,20 @@ var _,
 function setup() {
 	createCanvas(400, 400);
 
-	isThing = function (maybeisthing) {
-		return maybeisthing === undefined || maybeisthing === NaN || maybeisthing === null;
+	isThing = (maybeisthing) => {
+		return maybeisthing !== undefined && (typeof maybeisthing === "number" ? isNaN(maybeisthing) : true) && maybeisthing !== null;
+	};
+
+	runForEach = (arr, methods) => {
+		arr.forEach((obj, indx) => {
+			if (methods instanceof Array) {
+				methods.forEach = (elem) => {
+					obj[elem]();
+				};
+			} else if (typeof methods === "string") {
+				obj[methods]();
+			}
+		});
 	};
 
 	/**
@@ -33,39 +46,40 @@ function setup() {
 
 
 			// Store a class-wide reference to a reference object
-
+			if (isThing(classConfig.refObj)) {
+				this.refObj = classConfig.refObj;
+			}
 
 			// Assign default values to undefined properties
 			if (isThing(classConfig.inheritFrom)) {
-				classConfig.inheritFrom.forEach((elem) => {
-					if (isThing(elem.defaults)) {
-						if (!isThing(this_.defaults)) {
-							this_.defaults = {};
-						}
-						Object.keys(elem.defaults).forEach((defaultKey) => {
-							if (!elem.defaults.includes(elem.defaults[defaultKey])) {
-								this_.defaults[defaultKey] = elem.defaults[defaultKey];
+				classConfig.inheritFrom.forEach((parent) => {
+					if (isThing(parent.defaults)) {
+						for (let elem in parent.defaults) {
+							if (!isThing(this_[elem])) {
+								this_[elem] = classConfig.defaults[elem];
 							}
-						});
-					}
-					if (!isThing(this_.defaults)) {
-						if (isThing(elem.defaults)) {
-							this_.defaults = {};
 						}
-						Object.keys(elem.defaults).forEach((defaultKey) => {
-							if (elem.defaults.includes(elem.defaults[defaultKey])) { return; }
-							this_.defaults[defaultKey] = elem.defaults[defaultKey];
+					}
+					if (isThing(parent.essentials)) {
+						if (!isThing(this_.essentials)) {
+							this_.essentials = {};
+						}
+						Object.keys(parent.essentials).forEach((essKey) => {
+							if (!parent.essentials.includes(parent.essentials[essKey])) {
+								this_.essentials[essKey] = parent.essentials[essKey];
+							}
 						});
 					}
 				});
 			}
+
 			// Assign default values to undefined properties
 			if (isThing(classConfig.defaults)) {
-				classConfig.defaults.forEach((elem, indx) => {
+				for (let elem in classConfig.defaults) {
 					if (!isThing(this_[elem])) {
 						this_[elem] = classConfig.defaults[elem];
 					}
-				});
+				}
 			}
 
 			// Print an error if a non-optional property is undefined
@@ -130,7 +144,9 @@ function setup() {
 	});
 
 
-	enemies.push(newClass);
+	enemies.push(new Enemy({
+
+	}));
 
 }
 
@@ -138,4 +154,11 @@ function setup() {
 
 function draw() {
 	background(220);
+
+
+	runForEach([{ a: () => { console.log("a"); } }], ["a"]);
+
+	noLoop();
 }
+
+
