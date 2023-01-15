@@ -50,6 +50,11 @@ function setup() {
 				this.refObj = classConfig.refObj;
 			}
 
+			// 
+			if (isThing(classConfig.methods)) {
+				Object.assign(this.prototype, classConfig.methods);
+			}
+
 			// Assign default values to undefined properties
 			if (isThing(classConfig.inheritFrom)) {
 				classConfig.inheritFrom.forEach((parent) => {
@@ -57,6 +62,13 @@ function setup() {
 						for (let elem in parent.defaults) {
 							if (!isThing(this_[elem])) {
 								this_[elem] = classConfig.defaults[elem];
+							}
+						}
+					}
+					if (isThing(parent.methods)) {
+						for (let elem in parent.methods) {
+							if (!isThing(this_[elem])) {
+								this_[elem] = classConfig.methods[elem];
 							}
 						}
 					}
@@ -156,7 +168,8 @@ function draw() {
 	background(220);
 
 
-	runForEach([{ a: () => { console.log("a"); } }], ["a"]);
+	runForEach(allies, 'display');
+	runForEach(enemies, 'display');
 
 	noLoop();
 }
