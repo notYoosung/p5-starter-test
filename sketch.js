@@ -50,7 +50,7 @@ function setup() {
 				this_.refObj = classConfig.refObj;
 			}
 
-			// 
+			// Move all of the methods to the class' prototype
 			if (isThing(classConfig.methods)) {
 				Object.assign(this_.prototype, classConfig.methods);
 			}
@@ -106,6 +106,8 @@ function setup() {
 					}
 				});
 			}
+
+			// if (this !== this_) { this = this_; }
 		};
 
 		return C;
@@ -160,8 +162,21 @@ function setup() {
 	});
 
 
-	enemies.push(new Enemy({
-	}));
+
+	for (let i = 100; i >= 0; i--) {
+		allies.push(new Ally({
+			x: Math.random() * width,
+			y: Math.random() * height,
+			w: 10, h: 10,
+		}));
+		enemies.push(new Enemy({
+			x: Math.random() * width,
+			y: Math.random() * height,
+			w: 10, h: 10,
+		}));
+	}
+
+
 
 }
 
