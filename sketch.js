@@ -45,11 +45,6 @@ function setup() {
 			Object.assign(this, config);
 
 
-			// Store a class-wide reference to a reference object
-			if (isThing(classConfig.refObj)) {
-				this_.refObj = classConfig.refObj;
-			}
-
 			// Move all of the methods to the class' prototype
 			if (isThing(classConfig.methods)) {
 				Object.assign(this_.prototype, classConfig.methods);
@@ -110,9 +105,13 @@ function setup() {
 			// if (this !== this_) { this = this_; }
 		};
 
+		// Store a class-wide reference to a reference object
+		if (isThing(classConfig.refObj)) {
+			C.refObj = classConfig.refObj;
+		}
+
 		return C;
 	};
-
 	Entity = newClass({
 		defaults: {
 			dir: 0,
