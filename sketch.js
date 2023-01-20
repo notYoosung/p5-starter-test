@@ -25,7 +25,7 @@ function setup() {
 					obj[elem]();
 				};
 			} else if (typeof methods === "string") {
-				console.log(obj);
+				// console.log(obj);
 				obj[methods]();
 			}
 		});
@@ -43,9 +43,9 @@ function setup() {
 		 */
 		var C = function (config) {
 			let this_ = this;
-			console.log("conf" + Object.keys(config));
+			// console.log("conf" + Object.keys(config));
 			Object.assign(this, config);
-			console.log(this_.x);
+			// console.log(this_.x);
 
 
 
@@ -88,7 +88,6 @@ function setup() {
 			if (isThing(classConfig.essentials)) {
 				classConfig.essentials.forEach((elem, indx) => {
 					if (!isThing(this_[elem])) {
-						console.log("elem" + elem);
 						console.log(`Err: Missing ${elem}.`);
 					}
 				});
@@ -96,6 +95,9 @@ function setup() {
 
 			// if (this !== this_) { this = this_; }
 		};
+
+		//
+		C.methods = classConfig.methods;
 
 		// Store a class-wide reference to a reference object
 		if (isThing(classConfig.refObj)) {
@@ -111,8 +113,8 @@ function setup() {
 				// Methods
 				if (isThing(parent.methods)) {
 					for (let elem in parent.methods) {
-						if (!isThing(this_[elem])) {
-							C.prototype[elem] = classConfig.methods[elem];
+						if (!isThing(C.prototype[elem])) {
+							C.prototype[elem] = parent[elem];
 						}
 					}
 				}
@@ -157,7 +159,7 @@ function setup() {
 		},
 	});
 
-	console.log(new Entity({ x: 10, y: 10, w: 10, h: 10 }));
+	// console.log(new Entity({ x: 10, y: 10, w: 10, h: 10 }));
 
 	Ally = newClass({
 		inheritFrom: [Entity],
@@ -184,6 +186,9 @@ function setup() {
 			w: 10, h: 10,
 		}));
 	}
+
+	console.log(Entity.methods);
+	console.log(enemies[0]);
 
 
 
