@@ -22,11 +22,11 @@ function setup() {
 		arr.forEach((obj, indx) => {
 			if (methods instanceof Array) {
 				methods.forEach = (elem) => {
-					obj[elem]();
+					obj[elem](obj);
 				};
 			} else if (typeof methods === "string") {
-				// console.log(obj);
-				obj[methods]();
+				console.log(obj);
+				obj[methods](obj);
 			}
 		});
 	};
@@ -97,11 +97,11 @@ function setup() {
 		};
 
 		//
-		C.methods = classConfig.methods;
+		C.methods = (isThing(classConfig.methods) ? classConfig.methods : {});
 
 		// Store a class-wide reference to a reference object
 		if (isThing(classConfig.refObj)) {
-			C.prototype.refObj = classConfig.refObj;
+			C.refObj = C.prototype.refObj = classConfig.refObj;
 		}
 		// Move all of the methods to the class' prototype
 		if (isThing(classConfig.methods)) {
@@ -114,7 +114,7 @@ function setup() {
 				if (isThing(parent.methods)) {
 					for (let elem in parent.methods) {
 						if (!isThing(C.prototype[elem])) {
-							C.prototype[elem] = parent[elem];
+							C.prototype[elem] = parent.methods[elem];
 						}
 					}
 				}
@@ -188,7 +188,7 @@ function setup() {
 	}
 
 	console.log(Entity.methods);
-	console.log(enemies[0]);
+	console.log(Enemy.methods);
 
 
 
